@@ -1,0 +1,74 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/frontend/node_modules
+/backend/.venv
+/.venv
+venv/
+env/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+/frontend/coverage
+/backend/.pytest_cache
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+
+# framework/build output
+/.next/
+/out/
+/build
+/frontend/dist
+/frontend/.vite
+/frontend/.turbo
+
+# misc
+.DS_Store
+Thumbs.db
+*.pem
+/frontend/vite-dev.log
+*.log
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# local env files
+.env
+.env*.local
+/frontend/.env
+/frontend/.env*.local
+/backend/.env
+/backend/.env*.local
+/backend/data/
+/backend/*.db
+/backend/*.sqlite
+/backend/*.sqlite3
+
+# generated analysis/evaluation output
+/graphify-out/cache/
+/backend/data/rag_evaluation_log.txt
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+/frontend/*.tsbuildinfo
+next-env.d.ts

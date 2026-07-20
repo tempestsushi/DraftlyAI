@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Draftly">
+  <defs>
+    <linearGradient id="bg" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="0.55" stop-color="#14B8A6"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#111318"/>
+  <path d="M18 13h22l8 8v30H18V13Z" fill="url(#bg)"/>
+  <path d="M40 13v10h8" fill="none" stroke="#EAF2FF" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M26 29h11.5c5.5 0 9.5 3.7 9.5 8.7S43 47 37.5 47H26V29Z" fill="#111318"/>
+  <path d="M32 35v6h5.2c1.9 0 3.1-1.2 3.1-3s-1.2-3-3.1-3H32Z" fill="#EAF2FF"/>
+  <path d="M23 21h10M23 25h15" stroke="#EAF2FF" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+</svg>

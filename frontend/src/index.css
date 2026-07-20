@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 13% 9%;
+    --foreground: 210 17% 95%;
+    --card: 225 12% 11%;
+    --card-foreground: 210 17% 95%;
+    --popover: 225 12% 11%;
+    --popover-foreground: 210 17% 95%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 225 10% 15%;
+    --secondary-foreground: 210 17% 85%;
+    --muted: 225 10% 15%;
+    --muted-foreground: 220 9% 55%;
+    --accent: 225 10% 18%;
+    --accent-foreground: 210 17% 90%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 225 10% 16%;
+    --input: 225 10% 16%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+
+    --chat-bg: 225 12% 11%;
+    --msg-ai: 225 11% 14%;
+    --msg-user: 221 70% 25%;
+    --surface: 225 12% 13%;
+    --surface-hover: 225 11% 17%;
+    --chip: 225 10% 16%;
+  }
+  /* Only one theme - everything is forced dark */
+  .dark {
+    --background: 220 13% 9%;
+    --foreground: 210 17% 95%;
+    --card: 225 12% 11%;
+    --card-foreground: 210 17% 95%;
+    --popover: 225 12% 11%;
+    --popover-foreground: 210 17% 95%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 225 10% 15%;
+    --secondary-foreground: 210 17% 85%;
+    --muted: 225 10% 15%;
+    --muted-foreground: 220 9% 55%;
+    --accent: 225 10% 18%;
+    --accent-foreground: 210 17% 90%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 225 10% 16%;
+    --input: 225 10% 16%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code,
+  pre,
+  kbd,
+  samp,
+  .font-mono {
+    font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* Chat bubble animations */
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bubble-in {
+  animation: bubble-in 0.2s ease-out;
+}
+
+/* Cursor blink */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '|';
+  animation: cursor-blink 1s infinite;
+  margin-left: 1px;
+}
+
+/* Typing dots */
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.typing-dot:nth-child(1) { animation: typing-dot 1.2s 0s infinite; }
+.typing-dot:nth-child(2) { animation: typing-dot 1.2s 0.2s infinite; }
+.typing-dot:nth-child(3) { animation: typing-dot 1.2s 0.4s infinite; }
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 180% 0; }
+  100% { background-position: -180% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--secondary) / 0.55),
+    hsl(var(--accent) / 0.85),
+    hsl(var(--secondary) / 0.55)
+  );
+  background-size: 220% 100%;
+  animation: skeleton-shimmer 1.35s ease-in-out infinite;
+}
+
+@keyframes draftly-glow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.draftly-glow-pill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: hsl(var(--secondary) / 0.72);
+  box-shadow:
+    0 0 0 1px hsl(var(--border) / 0.75),
+    0 18px 50px hsl(var(--background) / 0.55);
+}
+
+.draftly-glow-pill::before {
+  content: "";
+  position: absolute;
+  inset: -80%;
+  z-index: -2;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    hsl(var(--primary) / 0.1) 70deg,
+    hsl(var(--primary) / 0.95) 115deg,
+    hsl(180 80% 62% / 0.9) 155deg,
+    transparent 220deg,
+    transparent 360deg
+  );
+  animation: draftly-glow-spin 3.8s linear infinite;
+}
+
+.draftly-glow-pill::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--background) / 0.98)),
+    hsl(var(--card));
+}
