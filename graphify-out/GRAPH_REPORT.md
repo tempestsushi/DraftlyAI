@@ -1,13 +1,18 @@
 # Graph Report - LinkedInAi  (2026-07-20)
 
 ## Corpus Check
-- 109 files · ~40,945 words
+- 109 files · ~40,752 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 779 nodes · 1792 edges · 42 communities (33 shown, 9 thin omitted)
+- 777 nodes · 1783 edges · 40 communities (34 shown, 6 thin omitted)
 - Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 105 edges (avg confidence: 0.78)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `661c938c`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_models.py|models.py]]
@@ -45,8 +50,6 @@
 - [[_COMMUNITY_drafts-page.tsx|drafts-page.tsx]]
 - [[_COMMUNITY_button.tsx|button.tsx]]
 - [[_COMMUNITY_._compact_answer_for_draft|._compact_answer_for_draft]]
-- [[_COMMUNITY_.build_extractive_source_context_text|.build_extractive_source_context_text]]
-- [[_COMMUNITY_FakeGraph|FakeGraph]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `SupabaseStore` - 47 edges
@@ -75,11 +78,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (42 total, 9 thin omitted)
+## Communities (40 total, 6 thin omitted)
 
 ### Community 0 - "models.py"
-Cohesion: 0.08
-Nodes (53): chunk_sources(), _make_chunk(), cluster_duplicates(), _find_duplicate(), format_selected_context(), _source_label(), calculate_mmr(), PipelineConfig (+45 more)
+Cohesion: 0.14
+Nodes (34): chunk_sources(), _make_chunk(), cluster_duplicates(), _find_duplicate(), format_selected_context(), _source_label(), calculate_mmr(), PipelineConfig (+26 more)
 
 ### Community 1 - "dashboard.tsx"
 Cohesion: 0.14
@@ -90,12 +93,12 @@ Cohesion: 0.06
 Nodes (30): dependencies, autoprefixer, class-variance-authority, clsx, lucide-react, postcss, @radix-ui/react-dialog, @radix-ui/react-label (+22 more)
 
 ### Community 3 - "main.py"
-Cohesion: 0.07
-Nodes (32): create_supabase_store(), lifespan(), DraftImageSaveRequest, DraftRegenerateRequest, DraftUpdateRequest, IntegrationUpdateRequest, MessageUpdateRequest, RagEvaluationRequest (+24 more)
+Cohesion: 0.28
+Nodes (11): DraftImageSaveRequest, DraftUpdateRequest, add_draft_image(), delete_draft_image(), delete_one_draft_image(), get_draft(), get_draft_image(), list_draft_images() (+3 more)
 
 ### Community 4 - "agent.py"
-Cohesion: 0.09
-Nodes (16): FakeAgent, test_create_chat_model_requires_gemini_key(), test_create_draft_from_topic_response_builds_new_draft(), test_create_draft_from_topic_response_reuses_existing_draft(), test_moderate_mode_updates_conversation_summary(), test_quick_mode_skips_conversation_summary_update(), test_regenerate_draft_falls_back_to_latest_assistant_message(), test_stream_agent_run_passes_follow_up_memory_into_research_state() (+8 more)
+Cohesion: 0.10
+Nodes (35): chunk_sources(), _overlap_tail(), _split_text(), _coerce_embedding(), cosine_similarity(), _embed_with_legacy_ollama(), embed_with_ollama(), EmbeddingError (+27 more)
 
 ### Community 5 - "compilerOptions"
 Cohesion: 0.11
@@ -114,12 +117,12 @@ Cohesion: 0.33
 Nodes (5): 1. System Overview, 2. Chat And Research Flow, 3. Draft Flow, 4. LinkedIn Publishing Flow, Draftly Project Flow
 
 ### Community 9 - "SQLiteStoreBase"
-Cohesion: 0.09
-Nodes (9): DraftImageRecord, IntegrationRecord, LinkedInOAuthStateRecord, MessageSourceRecord, client(), _swap_store(), test_store(), InMemoryStore (+1 more)
+Cohesion: 0.10
+Nodes (8): IntegrationRecord, LinkedInOAuthStateRecord, MessageRecord, client(), _swap_store(), test_store(), InMemoryStore, TestClient
 
 ### Community 10 - "local-data.ts"
-Cohesion: 0.09
-Nodes (42): AgentStreamPayload, LinkedInAccountRecord, LinkedInPublishRequest, LinkedInPublishResponse, LinkedInStatusResponse, linkedin_callback(), linkedin_connect(), linkedin_disconnect() (+34 more)
+Cohesion: 0.06
+Nodes (49): lifespan(), IntegrationUpdateRequest, LinkedInAccountRecord, MessageUpdateRequest, agent_stream(), ResearchDepth, update_integration(), linkedin_callback() (+41 more)
 
 ### Community 11 - "Project Commands"
 Cohesion: 0.33
@@ -134,28 +137,28 @@ Cohesion: 0.70
 Nodes (3): Backend application package., configure_langchain_defaults(), configure_warning_filters()
 
 ### Community 21 - "TopicRecord"
-Cohesion: 0.18
-Nodes (3): AgentGraph, test_answer_prompt_and_memory_context_stay_compact(), test_summarize_sources_uses_local_evidence_without_llm_call()
+Cohesion: 0.06
+Nodes (33): AgentGraph, ResearchDepth, resolve_research_profile(), create_agent_graph(), ResearchDepth, FakeGraph, test_answer_prompt_and_memory_context_stay_compact(), test_article_url_fetch_uses_general_fallback_variants() (+25 more)
 
 ### Community 22 - "search_web"
-Cohesion: 0.05
-Nodes (55): create_chat_model(), ResearchDepth, ResearchProfile, resolve_research_profile(), _bm25_scores(), build_search_query_variants(), rank_search_results(), _is_transient_fetch_error() (+47 more)
+Cohesion: 0.06
+Nodes (37): create_chat_model(), ResearchProfile, _bm25_scores(), build_search_query_variants(), rank_search_results(), _is_transient_fetch_error(), Exception, AgentState (+29 more)
 
 ### Community 23 - "test_health_and_topics.py"
 Cohesion: 0.13
 Nodes (18): ImageGenerateRequest, ImageResult, generate_image_options(), _build_generation_prompt(), _concept_visual_direction(), _extract_gemini_image(), _extract_openrouter_image(), _find_image_data() (+10 more)
 
 ### Community 24 - "classify_request"
-Cohesion: 0.09
-Nodes (38): AgentIntent, classify_request(), _contains_any(), _is_question(), RoutingDecision, _starts_with_any(), chunk_text(), sse_event() (+30 more)
+Cohesion: 0.08
+Nodes (36): AgentIntent, chunk_text(), sse_event(), build_response_timeout_fallback(), extract_research_sentences(), ResearchDepth, should_update_conversation_summary(), Store (+28 more)
 
 ### Community 25 - "sidebar.tsx"
 Cohesion: 0.12
 Nodes (13): CommandCenterPage, DraftsPage, ImagesPage, SettingsPage, topicIdFromUrl(), NAV_ITEMS, Sidebar(), SidebarProps (+5 more)
 
 ### Community 26 - "models.py"
-Cohesion: 0.22
-Nodes (16): DraftLength, DraftRecord, DraftStatus, DraftTone, ImageUseCase, IntegrationStatus, LogSource, MessageRole (+8 more)
+Cohesion: 0.16
+Nodes (24): AgentStreamPayload, DraftLength, DraftRecord, DraftRegenerateRequest, DraftStatus, DraftTone, ImageUseCase, IntegrationStatus (+16 more)
 
 ### Community 27 - "api.ts"
 Cohesion: 0.12
@@ -171,15 +174,19 @@ Nodes (8): CommandCenterMessage, MessageSource, INLINE_DEPTH_OPTIONS, isTableSta
 
 ### Community 30 - "drafts.py"
 Cohesion: 0.14
-Nodes (3): TopicStatus, SupabaseStore, utc_now()
+Nodes (3): create_supabase_store(), TopicStatus, SupabaseStore
 
 ### Community 32 - "create_agent_graph"
-Cohesion: 0.21
-Nodes (15): create_agent_graph(), ResearchDepth, AgentState, test_article_url_fetch_uses_general_fallback_variants(), test_fetch_node_backfills_failed_fetches_with_snippets(), test_fetch_node_fetches_sources_in_parallel(), test_fetch_node_replaces_weak_extracts_with_later_strong_sources(), test_follow_up_reuses_prior_source_url_without_search() (+7 more)
+Cohesion: 0.25
+Nodes (12): classify_request(), _contains_any(), _is_question(), RoutingDecision, _starts_with_any(), test_current_event_request_routes_to_research_first(), test_explicit_post_request_routes_to_draft_workflow(), test_normal_question_routes_to_research_answer() (+4 more)
 
 ### Community 33 - "build_search_query"
 Cohesion: 0.33
 Nodes (9): build_search_query(), _compact_prompt(), _looks_like_follow_up(), _meaningful_word_count(), _recent_context_for_follow_up(), test_build_search_query_preserves_freshness_terms(), test_build_search_query_preserves_user_prompt_wording(), test_build_search_query_uses_context_for_clarification_follow_up() (+1 more)
+
+### Community 34 - "workflow.py"
+Cohesion: 0.27
+Nodes (4): TopicRecord, utc_now(), TopicStatus, datetime
 
 ### Community 36 - "drafts-page.tsx"
 Cohesion: 0.36
@@ -192,14 +199,14 @@ Nodes (5): Button, ButtonProps, buttonVariants, ResearchDepth, ChatComposer()
 ## Knowledge Gaps
 - **97 isolated node(s):** `Settings`, `$schema`, `style`, `rsc`, `tsx` (+92 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AgentGraph` connect `TopicRecord` to `models.py`, `create_agent_graph`, `._compact_answer_for_draft`, `.build_extractive_source_context_text`, `search_web`, `classify_request`?**
+- **Why does `AgentGraph` connect `TopicRecord` to `models.py`, `create_agent_graph`, `agent.py`, `search_web`?**
   _High betweenness centrality (0.050) - this node is a cross-community bridge._
-- **Why does `SupabaseStore` connect `drafts.py` to `workflow.py`, `topics.py`, `main.py`, `SQLiteStoreBase`, `models.py`, `resolve_research_profile`?**
+- **Why does `SupabaseStore` connect `drafts.py` to `workflow.py`, `topics.py`, `._compact_answer_for_draft`, `SQLiteStoreBase`, `local-data.ts`, `models.py`, `resolve_research_profile`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Why does `PipelineConfig` connect `models.py` to `search_web`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._

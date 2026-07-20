@@ -62,6 +62,7 @@ pnpm-debug.log*
 /backend/*.sqlite3
 
 # generated analysis/evaluation output
+/graphify-out/
 /graphify-out/cache/
 /backend/data/rag_evaluation_log.txt
 
@@ -72,3 +73,6 @@ pnpm-debug.log*
 *.tsbuildinfo
 /frontend/*.tsbuildinfo
 next-env.d.ts
+
+#graphify
+/graphify-out
