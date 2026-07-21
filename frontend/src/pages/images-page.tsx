@@ -140,7 +140,7 @@ export function ImagesPage() {
       return;
     }
 
-    const nextResults = await api.generateImages(searchQuery, useCase, 1);
+    const nextResults = await api.generateImages(searchQuery, useCase, 1, draft?.id);
     setSearchSets((current) => {
       const querySets = [...(current[key] ?? [])];
       querySets[page] = nextResults;
@@ -149,6 +149,9 @@ export function ImagesPage() {
     setResults(nextResults);
     setLastSearchQuery(searchQuery);
     setSearchPage(page);
+    if (draft) {
+      setSelectedImages(await api.listDraftImages(draft.id));
+    }
   }
 
   async function handleSearch() {

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import base64
+
+from app.models import ImageResult
 from app.models import TopicStatus
 
 
@@ -12,6 +15,13 @@ class FakeResponse:
 
     def json(self):
         return self.payload
+
+
+class FakeUploadResponse:
+    text = ""
+
+    def raise_for_status(self) -> None:
+        return None
 
 
 def test_image_generate_endpoint_maps_gemini_image_result(client, monkeypatch) -> None:
@@ -29,6 +39,7 @@ def test_image_generate_endpoint_maps_gemini_image_result(client, monkeypatch) -
     monkeypatch.setattr(image_generate.settings, "image_generation_provider", "gemini")
     monkeypatch.setattr(image_generate.settings, "gemini_image_model", "gemini-3.1-flash-image")
     monkeypatch.setattr(image_generate.requests, "post", fake_post)
+    monkeypatch.setattr(image_generate, "persist_generated_image_url", lambda image_url, *, provider: image_url)
 
     response = client.post(
         "/api/images/generate",
@@ -68,6 +79,7 @@ def test_image_generate_endpoint_maps_openrouter_image_result(client, monkeypatc
     monkeypatch.setattr(image_generate.settings, "openrouter_image_size", "")
     monkeypatch.setattr(image_generate.settings, "openrouter_image_aspect_ratio", "")
     monkeypatch.setattr(image_generate.requests, "post", fake_post)
+    monkeypatch.setattr(image_generate, "persist_generated_image_url", lambda image_url, *, provider: image_url)
 
     response = client.post(
         "/api/images/generate",
@@ -101,6 +113,83 @@ def test_image_generation_prompt_uses_text_to_image_visual_pipeline() -> None:
     assert "token blocks" in prompt
     assert "denoising stages" in prompt
     assert "do not render words" in prompt
+
+
+def test_generated_data_url_is_uploaded_to_supabase_storage(monkeypatch) -> None:
+    import app.services.images.storage as image_storage
+
+    captured = {}
+
+    def fake_post(url, **kwargs):
+        captured["url"] = url
+        captured["headers"] = kwargs["headers"]
+        captured["data"] = kwargs["data"]
+        captured["timeout"] = kwargs["timeout"]
+        return FakeUploadResponse()
+
+    monkeypatch.setattr(image_storage.settings, "supabase_url", "https://draftly.supabase.co")
+    monkeypatch.setattr(image_storage.settings, "supabase_service_role_key", "service-role-key")
+    monkeypatch.setattr(image_storage.settings, "supabase_image_bucket", "draftly-images")
+    monkeypatch.setattr(image_storage.settings, "image_storage_timeout_seconds", 12)
+    monkeypatch.setattr(image_storage.requests, "post", fake_post)
+
+    raw = b"fake image bytes"
+    data_url = f"data:image/png;charset=utf-8;base64,{base64.b64encode(raw).decode()}"
+    stored_url = image_storage.persist_generated_image_url(data_url, provider="gemini-image")
+
+    assert captured["url"].startswith(
+        "https://draftly.supabase.co/storage/v1/object/draftly-images/generated/gemini-image/"
+    )
+    assert captured["headers"]["Authorization"] == "Bearer service-role-key"
+    assert captured["headers"]["apikey"] == "service-role-key"
+    assert captured["headers"]["Content-Type"] == "image/png"
+    assert captured["data"] == raw
+    assert captured["timeout"] == 12
+    assert stored_url.startswith(
+        "https://draftly.supabase.co/storage/v1/object/public/draftly-images/generated/gemini-image/"
+    )
+
+
+def test_image_generate_endpoint_saves_generated_image_to_draft(client, test_store, monkeypatch) -> None:
+    import app.routes.images as image_routes
+
+    topic = test_store.create_topic("AI image prompts", TopicStatus.complete)
+    draft = test_store.add_draft(
+        title="AI image prompts",
+        content="Draft content",
+        source="research",
+        topic_id=topic.id,
+    )
+
+    monkeypatch.setattr(
+        image_routes,
+        "generate_images",
+        lambda *_args, **_kwargs: [
+            ImageResult(
+                title="Generated illustration",
+                image_url="https://draftly.supabase.co/storage/v1/object/public/draftly-images/generated/test.jpg",
+                thumbnail_url="https://draftly.supabase.co/storage/v1/object/public/draftly-images/generated/test.jpg",
+                source_url="https://ai.google.dev/gemini-api/docs/image-generation",
+                source_domain="ai.google.dev",
+                provider="gemini-image",
+                score=1,
+            )
+        ],
+    )
+
+    response = client.post(
+        "/api/images/generate",
+        json={
+            "prompt": "AI prompt to image pipeline",
+            "use_case": "technical_concept",
+            "draft_id": draft.id,
+        },
+    )
+
+    assert response.status_code == 200
+    saved_images = test_store.list_draft_images(draft.id)
+    assert len(saved_images) == 1
+    assert saved_images[0].image_url == response.json()[0]["image_url"]
 
 
 def test_save_list_and_delete_multiple_draft_images(client, test_store) -> None:

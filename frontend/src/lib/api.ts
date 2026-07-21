@@ -252,10 +252,10 @@ export const api = {
     });
   },
 
-  generateImages(prompt: string, useCase: ImageUseCase, count = 1) {
+  generateImages(prompt: string, useCase: ImageUseCase, count = 1, draftId?: string | null) {
     return request<ImageResult[]>("/api/images/generate", {
       method: "POST",
-      body: JSON.stringify({ prompt, use_case: useCase, count }),
+      body: JSON.stringify({ prompt, use_case: useCase, count, draft_id: draftId ?? null }),
     });
   },
 

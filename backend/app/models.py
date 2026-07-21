@@ -156,6 +156,7 @@ class ImageGenerateRequest(BaseModel):
     prompt: str = Field(min_length=3, max_length=500)
     use_case: ImageUseCase = ImageUseCase.linkedin_post_illustration
     count: int = Field(default=1, ge=1, le=1)
+    draft_id: str | None = None
 
 
 class DraftTone(str, Enum):

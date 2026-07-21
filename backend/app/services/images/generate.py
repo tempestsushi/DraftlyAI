@@ -4,6 +4,7 @@ import requests
 
 from ...config import settings
 from ...models import ImageResult, ImageUseCase
+from .storage import persist_generated_image_url
 
 GEMINI_IMAGE_MODEL_URL = "https://ai.google.dev/gemini-api/docs/image-generation"
 OPENROUTER_IMAGE_API_URL = "https://openrouter.ai/api/v1/images"
@@ -40,6 +41,7 @@ def generate_images(
             if provider == "openrouter"
             else _run_gemini_image(generation_prompt)
         )
+        generated["image_url"] = persist_generated_image_url(generated["image_url"], provider=generated["provider"])
         results.append(
             ImageResult(
                 title=f"Generated {use_case.value.replace('_', ' ')} #{index + 1}",

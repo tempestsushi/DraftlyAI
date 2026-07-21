@@ -107,6 +107,8 @@ class Settings:
     gemini_image_aspect_ratio: str = os.getenv("GEMINI_IMAGE_ASPECT_RATIO", "16:9")
     gemini_image_size: str = os.getenv("GEMINI_IMAGE_SIZE", "1K")
     image_generation_timeout_seconds: float = float(os.getenv("IMAGE_GENERATION_TIMEOUT_SECONDS", "60"))
+    supabase_image_bucket: str = os.getenv("SUPABASE_IMAGE_BUCKET", "")
+    image_storage_timeout_seconds: float = float(os.getenv("IMAGE_STORAGE_TIMEOUT_SECONDS", "30"))
     chat_recent_messages_limit: int = int(os.getenv("CHAT_RECENT_MESSAGES_LIMIT", "3"))
     chat_summary_char_limit: int = int(os.getenv("CHAT_SUMMARY_CHAR_LIMIT", "350"))
     chat_message_context_char_limit: int = int(os.getenv("CHAT_MESSAGE_CONTEXT_CHAR_LIMIT", "160"))
