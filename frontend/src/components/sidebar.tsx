@@ -11,13 +11,15 @@ import {
   FileText,
   Settings,
   Image as ImageIcon,
+  Home,
   MessageSquare,
   Loader2,
   Trash2,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { id: ROUTES.commandCenter, label: "New Chat", icon: LayoutDashboard },
+  { id: ROUTES.landing, label: "Home", icon: Home },
+  { id: ROUTES.chat, label: "New Chat", icon: LayoutDashboard },
   { id: ROUTES.drafts, label: "Draft Queue", icon: FileText },
   { id: ROUTES.images, label: "Images", icon: ImageIcon },
   { id: ROUTES.settings, label: "Settings", icon: Settings },
@@ -119,7 +121,7 @@ export function Sidebar({
                 )}
                 onClick={() => {
                   onNavigate(item.id);
-                  if (item.id === ROUTES.commandCenter) onNewChat();
+                  if (item.id === ROUTES.chat) onNewChat();
                 }}
               >
                 <Icon className="h-3.5 w-3.5 shrink-0" />
@@ -156,7 +158,7 @@ export function Sidebar({
                 {topics.map((topic) => {
                   const isSelected =
                     activeTopicId === topic.id &&
-                    activeRoute === ROUTES.commandCenter;
+                    activeRoute === ROUTES.chat;
                   return (
                     <div
                       key={topic.id}
@@ -230,7 +232,7 @@ export function Sidebar({
               )}
               onClick={() => {
                 onNavigate(item.id);
-                if (item.id === ROUTES.commandCenter) onNewChat();
+                if (item.id === ROUTES.chat) onNewChat();
               }}
             >
               <Icon className="h-5 w-5" />

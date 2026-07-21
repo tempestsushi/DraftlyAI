@@ -4,8 +4,11 @@ import * as React from "react";
 import { Sidebar } from "@/components/sidebar";
 import { ROUTES, normalizeRoute, type AppRoute } from "@/lib/routes";
 
-const CommandCenterPage = React.lazy(() =>
-  import("@/pages/command-center").then((module) => ({ default: module.CommandCenterPage }))
+const ChatPage = React.lazy(() =>
+  import("@/pages/chat-page").then((module) => ({ default: module.ChatPage }))
+);
+const LandingPage = React.lazy(() =>
+  import("@/pages/landing-page").then((module) => ({ default: module.LandingPage }))
 );
 const DraftsPage = React.lazy(() =>
   import("@/pages/drafts-page").then((module) => ({ default: module.DraftsPage }))
@@ -18,21 +21,32 @@ const SettingsPage = React.lazy(() =>
 );
 
 function topicIdFromUrl() {
-  if (normalizeRoute(window.location.pathname) !== ROUTES.commandCenter) {
+  if (normalizeRoute(window.location.pathname) !== ROUTES.chat) {
     return null;
+  }
+  const pathParts = window.location.pathname.replace(/\/+$/, "").split("/").filter(Boolean);
+  if (pathParts[0] === "chat" && pathParts[1]) {
+    return decodeURIComponent(pathParts[1]);
   }
   return new URLSearchParams(window.location.search).get("chat");
 }
 
-function commandCenterUrl(topicId?: string | null) {
-  return topicId ? `${ROUTES.commandCenter}?chat=${encodeURIComponent(topicId)}` : ROUTES.commandCenter;
+function chatUrl(topicId?: string | null) {
+  return topicId ? `${ROUTES.chat}/${encodeURIComponent(topicId)}` : ROUTES.chat;
 }
 
 function normalizeBrowserUrl() {
   if (window.location.pathname.replace(/\/+$/, "") !== "/command-center") {
+    if (window.location.pathname.replace(/\/+$/, "") === ROUTES.chat) {
+      const queryTopicId = new URLSearchParams(window.location.search).get("chat");
+      if (queryTopicId) {
+        window.history.replaceState({}, "", chatUrl(queryTopicId));
+      }
+    }
     return;
   }
-  window.history.replaceState({}, "", `${ROUTES.commandCenter}${window.location.search}`);
+  const queryTopicId = new URLSearchParams(window.location.search).get("chat");
+  window.history.replaceState({}, "", chatUrl(queryTopicId));
 }
 
 function PageFallback() {
@@ -82,24 +96,24 @@ export default function App() {
   function handleSelectTopic(id: string) {
     setActiveTopicId(id);
     setShouldLoadActiveTopic(true);
-    const nextUrl = commandCenterUrl(id);
+    const nextUrl = chatUrl(id);
     if (`${window.location.pathname}${window.location.search}` !== nextUrl) {
       window.history.pushState({}, "", nextUrl);
     }
-    setActiveRoute(ROUTES.commandCenter);
+    setActiveRoute(ROUTES.chat);
   }
 
   function handleNewChat() {
     setActiveTopicId(null);
     setShouldLoadActiveTopic(false);
-    navigate(ROUTES.commandCenter);
+    navigate(ROUTES.chat);
   }
 
   function handleTopicCreated(id: string | null) {
     setActiveTopicId(id);
     setShouldLoadActiveTopic(Boolean(id));
-    if (id && activeRoute === ROUTES.commandCenter) {
-      const nextUrl = commandCenterUrl(id);
+    if (id && activeRoute === ROUTES.chat) {
+      const nextUrl = chatUrl(id);
       if (`${window.location.pathname}${window.location.search}` !== nextUrl) {
         window.history.replaceState({}, "", nextUrl);
       }
@@ -114,16 +128,18 @@ export default function App() {
     if (activeTopicId === topicId) {
       setActiveTopicId(null);
       setShouldLoadActiveTopic(false);
-      navigate(ROUTES.commandCenter);
+      navigate(ROUTES.chat);
     }
     refreshTopics();
   }
 
   const renderView = () => {
     switch (activeRoute) {
-      case ROUTES.commandCenter:
+      case ROUTES.landing:
+        return <LandingPage onStartChat={handleNewChat} />;
+      case ROUTES.chat:
         return (
-          <CommandCenterPage
+          <ChatPage
             topicId={activeTopicId}
             shouldLoadTopic={shouldLoadActiveTopic}
             onTopicCreated={handleTopicCreated}
@@ -137,14 +153,7 @@ export default function App() {
       case ROUTES.settings:
         return <SettingsPage />;
       default:
-        return (
-          <CommandCenterPage
-            topicId={null}
-            shouldLoadTopic={false}
-            onTopicCreated={handleTopicCreated}
-            onTopicActivity={refreshTopics}
-          />
-        );
+        return <LandingPage onStartChat={handleNewChat} />;
     }
   };
 
