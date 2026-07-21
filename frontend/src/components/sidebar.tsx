@@ -97,8 +97,8 @@ export function Sidebar({
       <aside className="fixed left-0 top-0 z-40 hidden h-screen w-56 flex-col border-r border-border bg-card lg:flex">
         {/* Brand */}
         <div className="flex h-12 shrink-0 items-center gap-2.5 border-b border-border px-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
-            <FileText className="h-3.5 w-3.5 text-primary" />
+          <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-primary/10">
+            <img src="/favicon.svg" alt="" className="h-5 w-5" />
           </div>
           <span className="font-semibold text-sm">Draftly</span>
           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-green-500" />

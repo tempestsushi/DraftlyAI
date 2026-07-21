@@ -53,10 +53,6 @@ export function ChatPage({
         <div className="text-sm font-medium text-foreground">
           {topicId ? "Chat" : "New Chat"}
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-          Agent online
-        </div>
       </div>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto">

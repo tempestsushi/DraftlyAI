@@ -37,8 +37,8 @@ export function LandingPage({ onStartChat }: LandingPageProps) {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center gap-2 text-sm font-semibold text-foreground"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/10 text-primary">
-              D
+            <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-md bg-primary/10">
+              <img src="/favicon.svg" alt="" className="h-5 w-5" />
             </span>
             Draftly
           </button>
