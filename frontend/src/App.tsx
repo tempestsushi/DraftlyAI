@@ -61,6 +61,14 @@ function PageFallback() {
   );
 }
 
+function LandingFallback() {
+  return (
+    <div className="h-screen bg-background p-4">
+      <div className="mx-auto h-full w-full max-w-6xl rounded-2xl skeleton-shimmer" />
+    </div>
+  );
+}
+
 export default function App() {
   const [activeRoute, setActiveRoute] = React.useState<AppRoute>(() =>
     normalizeRoute(window.location.pathname)
@@ -156,6 +164,16 @@ export default function App() {
         return <LandingPage onStartChat={handleNewChat} />;
     }
   };
+
+  if (activeRoute === ROUTES.landing) {
+    return (
+      <div className="h-screen overflow-hidden bg-background">
+        <React.Suspense fallback={<LandingFallback />}>
+          <LandingPage onStartChat={handleNewChat} />
+        </React.Suspense>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
